@@ -161,10 +161,11 @@ class Bwt extends IPSModule {
 		$fullFileContent = file($fullFileName);
 		
 		// rsort($fullFileContent, SORT_STRING);
+		$fullReverseContent = array_reverse($fullFileContent);
 		
-		print_r($fullFileContent);
+		print_r($fullReverseContent);
 		
-		foreach ($fullFileContent as $currentLine) {
+		foreach ($fullReverseContent as $currentLine) {
 			
 			if ( preg_match('/^\d{6};\d\d:\d\d;' . $attributeName . ' (.*)/', $currentLine, $matches) ) {
 				
