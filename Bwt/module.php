@@ -169,7 +169,7 @@ class Bwt extends IPSModule {
 		// rsort($fullFileContent, SORT_STRING);
 		$fullReverseContent = array_reverse($fullFileContent);
 		
-		print_r($fullReverseContent);
+		// print_r($fullReverseContent);
 		
 		foreach ($fullReverseContent as $currentLine) {
 			
@@ -201,13 +201,13 @@ class Bwt extends IPSModule {
 		
 		$fullFileContent = file($fullFileName);
 		
-		print_r($fullFileContent);
+		// print_r($fullFileContent);
 		
 		$errorCount = 0;
 		
 		foreach ($fullFileContent as $currentLine) {
 			
-			if (preg_match('/^\d{6};\d\d:\d\d;' . $errorType . '$/', $currentLine) ) {
+			if (preg_match('/^\d{6};\d\d:\d\d;' . $errorType . '.*$/', $currentLine) ) {
 				
 				$errorCount++;
 			}
