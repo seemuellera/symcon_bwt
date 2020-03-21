@@ -162,7 +162,7 @@ class Bwt extends IPSModule {
 		
 		rsort($fullFileContent);
 		
-		forach ($fullFileContent as $currentLine) {
+		foreach ($fullFileContent as $currentLine) {
 			
 			if ( preg_match('/^\d{6};\d\d:\d\d;' . $attributeName . ' (.*)/', $currentLine, $matches) ) {
 				
