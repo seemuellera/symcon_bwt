@@ -160,7 +160,7 @@ class Bwt extends IPSModule {
 		
 		$fullFileContent = file($fullFileName);
 		
-		rsort($fullFileContent);
+		rsort($fullFileContent, SORT_STRING);
 		
 		print_r($fullFileContent);
 		
