@@ -34,6 +34,9 @@ class Bwt extends IPSModule {
 		$this->RegisterVariableFloat("HardnessOut","Hardness Out");
 		$this->RegisterVariableFloat("MaxWaterFlow","Max Water Flow");
 		
+		$this->RegisterVariableInt("RegenerationsColumnA","Number of regenerations - column A");
+		$this->RegisterVariableInt("RegenerationsColumnA","Number of regenerations - column B");
+		
 		// Default Actions
 		// $this->EnableAction("Status");
 
@@ -92,6 +95,7 @@ class Bwt extends IPSModule {
 		
 		$this->refreshHardness();
 		$this->refreshWaterFlowProtection();
+		$this->refreshColumnRegenerations();
 		
 		// print_r($this->listDirectory() );
 		
@@ -189,6 +193,31 @@ class Bwt extends IPSModule {
 	protected function refreshWaterFlowProtection() {
 		
 		SetValue($this->GetIDForIdent("MaxWaterFlow"), intval($this->getLatestConfigurationValue("MaxWaterAtOnce")));
+	}
+	
+	protected function countErrorEntries($errorType) {
+		
+		$fullFileName = $this->ReadPropertyString("path") . "/" . GetValue($this->GetIDForIdent("LatestConfigurationLog"));
+		
+		$fullFileContent = file($fullFileName);
+		
+		$errorCount = 0;
+		
+		foreach ($fullFileContent as $currentLine) {
+			
+			if (preg_match('/^\d{6};\d\d:\d\d;' . $errorType . '$/', $currentLine) ) {
+				
+				$errorCount++;
+			}
+		}
+		
+		return $errorCount;
+	}
+	
+	protected function refreshColumnRegenerations() {
+		
+		SetValue($this->GetIDForIdent("RegenerationsColumnA"), intval($this->countErrorEntries("71")));
+		SetValue($this->GetIDForIdent("RegenerationsColumnB"), intval($this->countErrorEntries("72")));
 	}
 }
 ?>
