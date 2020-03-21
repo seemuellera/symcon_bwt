@@ -166,13 +166,13 @@ class Bwt extends IPSModule {
 			
 			if ( preg_match('/^\d{6};\d\d:\d\d;' . $attributeName . ' (.*)/', $currentLine, $matches) ) {
 				
-				print_r($matches);
+				// print_r($matches);
 				
 				break;
 			}
 		}
 		
-		return $matches[0];
+		return $matches[1];
 	}
 	
 	protected function refreshHardness() {
