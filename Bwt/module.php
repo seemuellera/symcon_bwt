@@ -26,6 +26,7 @@ class Bwt extends IPSModule {
 		
 		// Variables
 		$this->RegisterVariableFloat("Consumption","Consumption","~Water");
+		$this->RegisterVariableString("LatestUsageLog","Latest Usager Log File Name");
 		
 		// Default Actions
 		// $this->EnableAction("Status");
@@ -79,6 +80,8 @@ class Bwt extends IPSModule {
 
 		IPS_LogMessage($_IPS['SELF'],"BWT - Refresh in progress");
 		
+		$this->refreshLatestUsageLog();
+		
 		print_r($this->listDirectory() );
 		
 	}
@@ -105,9 +108,31 @@ class Bwt extends IPSModule {
 		
 		$allFiles = scandir($this->ReadPropertyString("path") );
 		
-		print ($allFiles);
-		
 		return $allFiles;
+	}
+	
+	protected function getLastUsageLog() {
+		
+		$allFiles = $this->listDirectory();
+		
+		asort($allFiles);
+		
+		$latestUsageLogFile = "USAGE_00.LOG";
+		
+		foreach ($allFiles as $currentFile) {
+			
+			if(preg_match('/^USAGE_\d\d.LOG$/', $currentFile) ) {
+				
+				$latestUsageLogFile = $currentFile;
+			}
+		}
+		
+		return $latestUsageLogFile;
+	}
+	
+	protected function refreshLatestUsageLog() {
+		
+		SetValue($this->GetIDForIdent("LatestUsageLog"), $this->getLastUsageLog() );
 	}
 }
 ?>
