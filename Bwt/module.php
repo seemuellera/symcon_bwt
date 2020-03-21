@@ -162,11 +162,13 @@ class Bwt extends IPSModule {
 		
 		rsort($fullFileContent);
 		
+		print_r($fullFileContent);
+		
 		foreach ($fullFileContent as $currentLine) {
 			
 			if ( preg_match('/^\d{6};\d\d:\d\d;' . $attributeName . ' (.*)/', $currentLine, $matches) ) {
 				
-				// print_r($matches);
+				// print_r($matches);				
 				
 				break;
 			}
@@ -177,8 +179,8 @@ class Bwt extends IPSModule {
 	
 	protected function refreshHardness() {
 		
-		SetValue($this->GetIDForIdent("HardnessIn"), ( $this->getLatestConfigurationValue("HardnessIn") / 10 ) );
-		SetValue($this->GetIDForIdent("HardnessOut"), ( $this->getLatestConfigurationValue("usHardnessOut") / 10 ) );
+		SetValue($this->GetIDForIdent("HardnessIn"), floatval($this->getLatestConfigurationValue("HardnessIn")) / 10);
+		SetValue($this->GetIDForIdent("HardnessOut"), floatval($this->getLatestConfigurationValue("usHardnessOut")) / 10);
 	}
 }
 ?>
