@@ -91,7 +91,7 @@ class Bwt extends IPSModule {
 		
 		$this->refreshHardness();
 		
-		print_r($this->listDirectory() );
+		// print_r($this->listDirectory() );
 		
 	}
 	
@@ -177,8 +177,8 @@ class Bwt extends IPSModule {
 	
 	protected function refreshHardness() {
 		
-		SetValue($this->GetIDForIdent("HardnessIn"), $this->getLatestConfigurationValue("HardnessIn") / 10 );
-		SetValue($this->GetIDForIdent("HardnessOut"), $this->getLatestConfigurationValue("usHardnessOut") / 10 );
+		SetValue($this->GetIDForIdent("HardnessIn"), ( $this->getLatestConfigurationValue("HardnessIn") / 10 ) );
+		SetValue($this->GetIDForIdent("HardnessOut"), ( $this->getLatestConfigurationValue("usHardnessOut") / 10 ) );
 	}
 }
 ?>
