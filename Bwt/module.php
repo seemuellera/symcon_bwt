@@ -139,7 +139,7 @@ class Bwt extends IPSModule {
 		SetValue($this->GetIDForIdent("LatestUsageLog"), $this->getLastLog("USAGE") );
 	}
 	
-	protected function refreshLatestUsageLog() {
+	protected function refreshLatestConfigurationLog() {
 		
 		SetValue($this->GetIDForIdent("LatestConfigurationLog"), $this->getLastLog("CONF") );
 	}
