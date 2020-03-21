@@ -35,7 +35,7 @@ class Bwt extends IPSModule {
 		$this->RegisterVariableFloat("MaxWaterFlow","Max Water Flow");
 		
 		$this->RegisterPropertyInteger("RegenerationsColumnA","Number of regenerations - column A");
-		$this->RegisterPropertyInteger("RegenerationsColumnA","Number of regenerations - column B");
+		$this->RegisterPropertyInteger("RegenerationsColumnB","Number of regenerations - column B");
 		
 		// Default Actions
 		// $this->EnableAction("Status");
