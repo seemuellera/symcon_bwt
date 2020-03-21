@@ -32,6 +32,7 @@ class Bwt extends IPSModule {
 		$this->RegisterVariableFloat("Consumption","Consumption","~Water");
 		$this->RegisterVariableFloat("HardnessIn","Hardness In");
 		$this->RegisterVariableFloat("HardnessOut","Hardness Out");
+		$this->RegisterVariableFloat("MaxWaterFlow","Max Water Flow");
 		
 		// Default Actions
 		// $this->EnableAction("Status");
@@ -90,6 +91,7 @@ class Bwt extends IPSModule {
 		$this->refreshLatestErrorLog();
 		
 		$this->refreshHardness();
+		$this->refreshWaterFlowProtection();
 		
 		// print_r($this->listDirectory() );
 		
@@ -182,6 +184,11 @@ class Bwt extends IPSModule {
 		
 		SetValue($this->GetIDForIdent("HardnessIn"), floatval($this->getLatestConfigurationValue("HardnessIn")) / 10);
 		SetValue($this->GetIDForIdent("HardnessOut"), floatval($this->getLatestConfigurationValue("usHardnessOut")) / 10);
+	}
+	
+	protected function refreshWaterFlowProtection() {
+		
+		SetValue($this->GetIDForIdent("MaxWaterFlow"), intval($this->getLatestConfigurationValue("MaxWaterAtOnce")));
 	}
 }
 ?>
