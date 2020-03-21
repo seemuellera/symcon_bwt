@@ -26,7 +26,9 @@ class Bwt extends IPSModule {
 		
 		// Variables
 		$this->RegisterVariableFloat("Consumption","Consumption","~Water");
-		$this->RegisterVariableString("LatestUsageLog","Latest Usager Log File Name");
+		$this->RegisterVariableString("LatestUsageLog","Latest Usager Log");
+		$this->RegisterVariableString("LatestConfigurationLog","Latest Configuration Log");
+		$this->RegisterVariableString("LatestErrorLog","Latest Error Log");
 		
 		// Default Actions
 		// $this->EnableAction("Status");
@@ -81,6 +83,8 @@ class Bwt extends IPSModule {
 		IPS_LogMessage($_IPS['SELF'],"BWT - Refresh in progress");
 		
 		$this->refreshLatestUsageLog();
+		$this->refreshLatestConfigurationLog();
+		$this->refreshLatestErrorLog();
 		
 		print_r($this->listDirectory() );
 		
@@ -111,28 +115,38 @@ class Bwt extends IPSModule {
 		return $allFiles;
 	}
 	
-	protected function getLastUsageLog() {
+	protected function getLastLog($baseFileName) {
 		
 		$allFiles = $this->listDirectory();
 		
 		asort($allFiles);
 		
-		$latestUsageLogFile = "USAGE_00.LOG";
+		$latestLogFile = $baseFileName . "_00.LOG";
 		
 		foreach ($allFiles as $currentFile) {
 			
-			if(preg_match('/^USAGE_\d\d.LOG$/', $currentFile) ) {
+			if(preg_match('/^' . $baseFileName . '_\d\d.LOG$/', $currentFile) ) {
 				
-				$latestUsageLogFile = $currentFile;
+				$latestLogFile = $currentFile;
 			}
 		}
 		
-		return $latestUsageLogFile;
+		return $latestLogFile;
 	}
 	
 	protected function refreshLatestUsageLog() {
 		
-		SetValue($this->GetIDForIdent("LatestUsageLog"), $this->getLastUsageLog() );
+		SetValue($this->GetIDForIdent("LatestUsageLog"), $this->getLastLog("USAGE") );
+	}
+	
+	protected function refreshLatestUsageLog() {
+		
+		SetValue($this->GetIDForIdent("LatestConfigurationLog"), $this->getLastLog("CONF") );
+	}
+	
+	protected function refreshLatestErrorLog() {
+		
+		SetValue($this->GetIDForIdent("LatestErrorLog"), $this->getLastLog("ERR") );
 	}
 }
 ?>
