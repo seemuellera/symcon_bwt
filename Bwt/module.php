@@ -201,6 +201,8 @@ class Bwt extends IPSModule {
 		
 		$fullFileContent = file($fullFileName);
 		
+		print_r($fullFileContent);
+		
 		$errorCount = 0;
 		
 		foreach ($fullFileContent as $currentLine) {
