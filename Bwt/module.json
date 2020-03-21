@@ -1,0 +1,14 @@
+{
+  "id": "{08FE1BB4-546E-4AD2-9EAD-0694A1426A2B}",
+  "name": "Bwt",
+  "type": 3,
+  "vendor": "Andreas Seemueller",
+  "aliases": 
+  [
+	  "Bwt"
+  ],
+  "parentRequirements": [],
+  "childRequirements": [],
+  "implemented": [],
+  "prefix": "BWT"
+}
