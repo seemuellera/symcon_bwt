@@ -25,10 +25,13 @@ class Bwt extends IPSModule {
 		$this->RegisterPropertyString("path","");
 		
 		// Variables
-		$this->RegisterVariableFloat("Consumption","Consumption","~Water");
 		$this->RegisterVariableString("LatestUsageLog","Latest Usager Log");
 		$this->RegisterVariableString("LatestConfigurationLog","Latest Configuration Log");
 		$this->RegisterVariableString("LatestErrorLog","Latest Error Log");
+		
+		$this->RegisterVariableFloat("Consumption","Consumption","~Water");
+		$this->RegisterVariableFloat("HardnessIn","Hardness In");
+		$this->RegisterVariableFloat("HardnessOut","Hardness Out");
 		
 		// Default Actions
 		// $this->EnableAction("Status");
@@ -85,6 +88,8 @@ class Bwt extends IPSModule {
 		$this->refreshLatestUsageLog();
 		$this->refreshLatestConfigurationLog();
 		$this->refreshLatestErrorLog();
+		
+		$this->refreshHardness();
 		
 		print_r($this->listDirectory() );
 		
@@ -147,6 +152,33 @@ class Bwt extends IPSModule {
 	protected function refreshLatestErrorLog() {
 		
 		SetValue($this->GetIDForIdent("LatestErrorLog"), $this->getLastLog("ERR") );
+	}
+	
+	protected function getLatestConfigurationValue($attributeName) {
+		
+		$fullFileName = $this->ReadPropertyString("path") . "/" . GetValue($this->GetIDForIdent("LatestConfigurationLog"));
+		
+		$fullFileContent = file($fullFileName);
+		
+		rsort($fullFileContent);
+		
+		forach ($fullFileContent as $currentLine) {
+			
+			if ( preg_match('/^\d{6};\d\d:\d\d;' . $attributeName . ' (.*)/', $currentLine, $matches) ) {
+				
+				print_r($matches);
+				
+				break;
+			}
+		}
+		
+		return $matches[0];
+	}
+	
+	protected function refreshHardness() {
+		
+		SetValue($this->GetIDForIdent("HardnessIn"), $this->getLatestConfigurationValue("HardnessIn") / 10 );
+		SetValue($this->GetIDForIdent("HardnessOut"), $this->getLatestConfigurationValue("usHardnessOut") / 10 );
 	}
 }
 ?>
