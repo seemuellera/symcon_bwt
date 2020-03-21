@@ -25,13 +25,13 @@ class Bwt extends IPSModule {
 		$this->RegisterPropertyString("path","");
 		
 		// Variables
-		$this->RegisterVariableFloat("Consumption","Consumption", $variableProfilePowerState);
+		$this->RegisterVariableFloat("Consumption","Consumption","~Water");
 		
 		// Default Actions
 		// $this->EnableAction("Status");
 
 		// Timer
-		$this->RegisterTimer("RefreshInformation", 0 , 'HPEILO_RefreshInformation($_IPS[\'TARGET\']);');
+		$this->RegisterTimer("RefreshInformation", 0 , 'BWT_RefreshInformation($_IPS[\'TARGET\']);');
 
     }
 
@@ -68,7 +68,7 @@ class Bwt extends IPSModule {
 		$form['elements'][] = Array("type" => "ValidationTextBox", "name" => "path", "caption" => "Path to the logfiles");
 
 		// Add the buttons for the test center
-		$form['actions'][] = Array("type" => "Button", "label" => "Refresh Overall Status", "onClick" => 'HPEILO_RefreshInformation($id);');
+		$form['actions'][] = Array("type" => "Button", "label" => "Refresh Overall Status", "onClick" => 'BWT_RefreshInformation($id);');
 		
 		// Return the completed form
 		return json_encode($form);
@@ -77,7 +77,7 @@ class Bwt extends IPSModule {
 
 	public function RefreshInformation() {
 
-		// IPS_LogMessage($_IPS['SELF'],"HPEILO - Refresh in progress");
+		IPS_LogMessage($_IPS['SELF'],"BWT - Refresh in progress");
 		
 		print_r($this->listDirectory() );
 		
@@ -91,15 +91,7 @@ class Bwt extends IPSModule {
 			
 			case "Status":
 				// Default Action for Status Variable
-				if ($Value) {
 				
-					$this->PressPowerButton();
-				}
-				else {
-				
-					$this->PressPowerButton();
-				}
-
 				// Neuen Wert in die Statusvariable schreiben
 				SetValue($this->GetIDForIdent($Ident), $Value);
 				break;
