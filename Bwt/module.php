@@ -238,11 +238,16 @@ class Bwt extends IPSModule {
 		
 		foreach ($fullReverseContent as $currentLine) {
 			
-			if ( preg_match('/^(\d{6};\d\d:\d\d);(\d+,\d+);(\d+).*$/', $currentLine, $matches) ) {
+			if ( preg_match('/^(\d{6};\d\d:\d\d);(\d+),(\d+);(\d+).*$/', $currentLine, $matches) ) {
 				
-				print_r($matches);				
+				print $matches[1] . ": " . $matches[4] . "\n";
 				
-				break;
+				if ($matches[1] == GetValue($this->GetIDForIdent("LatestUsageLogPosition") ) ) {
+				
+					// we reached a line that we already processed so we can stop
+					break;
+					
+				}
 			}
 		}
 		
