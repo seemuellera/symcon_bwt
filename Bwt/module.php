@@ -25,8 +25,8 @@ class Bwt extends IPSModule {
 		$this->RegisterPropertyString("path","");
 		
 		// Variables
-		$this->RegisterVariableString("LatestUsageLog","Latest Usager Log");
-		$this->RegisterVariableString("LatestUsageLogPosition","Latest Usager Log Position");
+		$this->RegisterVariableString("LatestUsageLog","Latest Usage Log");
+		$this->RegisterVariableString("LatestUsageLogPosition","Latest Usage Log Position");
 		$this->RegisterVariableString("LatestConfigurationLog","Latest Configuration Log");
 		$this->RegisterVariableString("LatestErrorLog","Latest Error Log");
 		
@@ -233,6 +233,13 @@ class Bwt extends IPSModule {
 		
 		// rsort($fullFileContent, SORT_STRING);
 		$fullReverseContent = array_reverse($fullFileContent);
+		
+		// Set the starting point to the last entry if it is not set already:
+		if (! GetValue($this->GetIDForIdent("LatestUsageLogPosition") ) ) {
+			
+			preg_match('/^(\d{6};\d\d:\d\d);.*$/', $fullReverseContent[0], $matches);
+			SetValue($this->GetIDForIdent("LatestUsageLogPosition", $matches[1]) );
+		}
 		
 		// print_r($fullReverseContent);
 		
