@@ -249,18 +249,17 @@ class Bwt extends IPSModule {
 			
 			if ( preg_match('/^(\d{6};\d\d:\d\d);(\d+),(\d+);(\d+).*$/', $currentLine, $matches) ) {
 				
-				print $matches[1] . ": " . $matches[4] . "\n";
+				print $matches[1] . ": " . $matches[2] . " / " . $matches[3] . " / " . $matches[4] . "\n";
 				
 				if ($matches[1] == GetValue($this->GetIDForIdent("LatestUsageLogPosition") ) ) {
 				
 					// we reached a line that we already processed so we can stop
+					echo "Line already processed, exiting\n";
 					break;
 					
 				}
 			}
 		}
-		
-		return $matches[1];
 	}
 }
 ?>
