@@ -253,12 +253,12 @@ class Bwt extends IPSModule {
 			
 			if ( preg_match('/^(\d{6};\d\d:\d\d);(\d+),(\d+);(\d+).*$/', $currentLine, $matches) ) {
 				
-				print $matches[1] . ": " . $matches[2] . " / " . $matches[3] . " / " . $matches[4] . "\n";
+				// print $matches[1] . ": " . $matches[2] . " / " . $matches[3] . " / " . $matches[4] . "\n";
 				
 				if ($matches[1] == GetValue($this->GetIDForIdent("LatestUsageLogPosition") ) ) {
 				
 					// we reached a line that we already processed so we can stop
-					echo "Line already processed, exiting\n";
+					// echo "Line already processed, exiting\n";
 					break;
 					
 				}
@@ -279,7 +279,29 @@ class Bwt extends IPSModule {
 			}
 		}
 		
-		print_r($deltaValues);
+		// print_r($deltaValues);
+		$result = AC_AddLoggedValues($this->GetIDForIdent("ArchiveId"), $this->GetIDForIdent("Consumption"), $deltaValues);
+		
+		if (result) {
+			
+			preg_match('/^(\d{6};\d\d:\d\d);.*$/', $fullReverseContent[0], $matches);
+			SetValue($this->GetIDForIdent("LatestUsageLogPosition"), $matches[1]);
+		}
+		else {		
+			
+			IPS_LogMessage($_IPS['SELF'],"BWT - ERROR - Historic values could not be added to archive");
+			return false;
+		}
+		
+		$result = AC_ReAggregateVariable($this->GetIDForIdent("ArchiveId"), $this->GetIDForIdent("Consumption") );
+		
+		if (! result) {
+			
+			IPS_LogMessage($_IPS['SELF'],"BWT - ERROR - Historic archive could not be re-aggregated");
+			return false;
+		}
+		
+		return true;
 	}
 }
 ?>
