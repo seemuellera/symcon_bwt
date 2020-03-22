@@ -26,6 +26,7 @@ class Bwt extends IPSModule {
 		
 		// Variables
 		$this->RegisterVariableString("LatestUsageLog","Latest Usager Log");
+		$this->RegisterVariableString("LatestUsageLogPosition","Latest Usager Log Position");
 		$this->RegisterVariableString("LatestConfigurationLog","Latest Configuration Log");
 		$this->RegisterVariableString("LatestErrorLog","Latest Error Log");
 		
@@ -96,6 +97,8 @@ class Bwt extends IPSModule {
 		$this->refreshHardness();
 		$this->refreshWaterFlowProtection();
 		$this->refreshColumnRegenerations();
+		
+		$this->processLatestUsageEntries();
 		
 		// print_r($this->listDirectory() );
 		
@@ -220,6 +223,30 @@ class Bwt extends IPSModule {
 		
 		SetValue($this->GetIDForIdent("RegenerationsColumnA"), intval($this->countErrorEntries("71")));
 		SetValue($this->GetIDForIdent("RegenerationsColumnB"), intval($this->countErrorEntries("72")));
+	}
+	
+	protected function processLatestUsageEntries() {
+		
+		$fullFileName = $this->ReadPropertyString("path") . "/" . GetValue($this->GetIDForIdent("LatestUsageLog"));
+		
+		$fullFileContent = file($fullFileName);
+		
+		// rsort($fullFileContent, SORT_STRING);
+		$fullReverseContent = array_reverse($fullFileContent);
+		
+		// print_r($fullReverseContent);
+		
+		foreach ($fullReverseContent as $currentLine) {
+			
+			if ( preg_match('/^(\d{6};\d\d:\d\d);(\d+,\d+);(\d+).*$/', $currentLine, $matches) ) {
+				
+				print_r($matches);				
+				
+				break;
+			}
+		}
+		
+		return $matches[1];
 	}
 }
 ?>
