@@ -238,7 +238,7 @@ class Bwt extends IPSModule {
 		if (! GetValue($this->GetIDForIdent("LatestUsageLogPosition") ) ) {
 			
 			preg_match('/^(\d{6};\d\d:\d\d);.*$/', $fullReverseContent[0], $matches);
-			SetValue($this->GetIDForIdent("LatestUsageLogPosition", $matches[1]) );
+			SetValue($this->GetIDForIdent("LatestUsageLogPosition"), $matches[1]);
 			
 			return true;
 		}
