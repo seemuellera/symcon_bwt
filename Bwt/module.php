@@ -23,6 +23,7 @@ class Bwt extends IPSModule {
 		$this->RegisterPropertyString("Sender","Bwt");
 		$this->RegisterPropertyInteger("RefreshInterval",0);
 		$this->RegisterPropertyString("path","");
+		$this->RegisterPropertyInteger("ArchiveId",1);
 		
 		// Variables
 		$this->RegisterVariableString("LatestUsageLog","Latest Usage Log");
@@ -77,6 +78,7 @@ class Bwt extends IPSModule {
 		// Add the Elements
 		$form['elements'][] = Array("type" => "NumberSpinner", "name" => "RefreshInterval", "caption" => "Refresh Interval");
 		$form['elements'][] = Array("type" => "ValidationTextBox", "name" => "path", "caption" => "Path to the logfiles");
+		$form['elements'][] = Array("type" => "SelectObject", "name" => "ArchiveId", "caption" => "Select Archive for logging");
 
 		// Add the buttons for the test center
 		$form['actions'][] = Array("type" => "Button", "label" => "Refresh Overall Status", "onClick" => 'BWT_RefreshInformation($id);');
@@ -245,6 +247,8 @@ class Bwt extends IPSModule {
 		
 		// print_r($fullReverseContent);
 		
+		$deltaValues = Array();
+		
 		foreach ($fullReverseContent as $currentLine) {
 			
 			if ( preg_match('/^(\d{6};\d\d:\d\d);(\d+),(\d+);(\d+).*$/', $currentLine, $matches) ) {
@@ -258,8 +262,24 @@ class Bwt extends IPSModule {
 					break;
 					
 				}
+				
+				$currentValue = Array();
+				$tsYear = "20" . substr($matches[1],4,2);
+				$tsMonth = substr($matches[1],2,2);
+				$tsDay = substr($matches[1],0,2);
+				$tsHour = substr($matches[1],7,2);
+				$tsMinute = substr($matches[1],10,2);
+				$tsSecond = 0;
+				$ts = mktime($tsHour, $tsMinute, $tsSecond, $tsMonth, $tsDay, $tsYear);
+				
+				$currentValue['TimeStamp'] = $ts;
+				$currentValue['Value'] = $matches[4];
+				
+				$deltaValues[] = $currentValue;
 			}
 		}
+		
+		print_r($deltaValues);
 	}
 }
 ?>
