@@ -231,7 +231,7 @@ class Bwt extends IPSModule {
 		return $errorCount;
 	}
 	
-	protected functiion processErrorLog() {
+	protected function processErrorLog() {
 		
 		// Regenerations 
 		SetValue($this->GetIDForIdent("RegenerationsColumnA"), intval($this->countErrorEntries("71")));
