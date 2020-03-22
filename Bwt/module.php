@@ -1,4 +1,4 @@
-<?php
+Ar<?php
 
 // Klassendefinition
 class Bwt extends IPSModule {
@@ -280,7 +280,7 @@ class Bwt extends IPSModule {
 		}
 		
 		// print_r($deltaValues);
-		$result = AC_AddLoggedValues($this->GetIDForIdent("ArchiveId"), $this->GetIDForIdent("Consumption"), $deltaValues);
+		$result = AC_AddLoggedValues($this->ReadPropertyInteger("ArchiveId"), $this->GetIDForIdent("Consumption"), $deltaValues);
 		
 		if (result) {
 			
@@ -293,7 +293,7 @@ class Bwt extends IPSModule {
 			return false;
 		}
 		
-		$result = AC_ReAggregateVariable($this->GetIDForIdent("ArchiveId"), $this->GetIDForIdent("Consumption") );
+		$result = AC_ReAggregateVariable($this->ReadPropertyInteger("ArchiveId"), $this->GetIDForIdent("Consumption") );
 		
 		if (! result) {
 			
