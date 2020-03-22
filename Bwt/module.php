@@ -38,6 +38,10 @@ class Bwt extends IPSModule {
 		
 		$this->RegisterVariableInteger("RegenerationsColumnA","Number of regenerations - column A");
 		$this->RegisterVariableInteger("RegenerationsColumnB","Number of regenerations - column B");
+		$this->RegisterVariableInteger("OutOfSaltAlerts","Out of Salt alerts");
+		$this->RegisterVariableInteger("AquaWatchTriggers","Aqua-Watch was triggered");
+		$this->RegisterVariableInteger("AquaStopTriggers","Aqua-Stop was triggered");
+		$this->RegisterVariableInteger("AquaStopLitersTriggers","Aqua-Stop based on flow was triggered");
 		
 		// Default Actions
 		// $this->EnableAction("Status");
@@ -99,8 +103,8 @@ class Bwt extends IPSModule {
 		
 		$this->refreshHardness();
 		$this->refreshWaterFlowProtection();
-		$this->refreshColumnRegenerations();
 		
+		$this->processErrorLog();
 		$this->processLatestUsageEntries();
 		
 		// print_r($this->listDirectory() );
@@ -227,10 +231,19 @@ class Bwt extends IPSModule {
 		return $errorCount;
 	}
 	
-	protected function refreshColumnRegenerations() {
+	protected functiion processErrorLog() {
 		
+		// Regenerations 
 		SetValue($this->GetIDForIdent("RegenerationsColumnA"), intval($this->countErrorEntries("71")));
 		SetValue($this->GetIDForIdent("RegenerationsColumnB"), intval($this->countErrorEntries("72")));
+		
+		// Out of Salt
+		SetValue($this->GetIDForIdent("OutOfSaltAlerts"), intval($this->countErrorEntries("5")));
+		
+		// Aqua Stop
+		SetValue($this->GetIDForIdent("AquaWatchTriggers"), intval($this->countErrorEntries("15")));
+		SetValue($this->GetIDForIdent("AquaStopTriggers"), intval($this->countErrorEntries("14")));
+		SetValue($this->GetIDForIdent("AquaStopLitersTriggers"), intval($this->countErrorEntries("13")));
 	}
 	
 	protected function processLatestUsageEntries() {
