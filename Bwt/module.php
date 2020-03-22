@@ -279,7 +279,8 @@ class Bwt extends IPSModule {
 			}
 		}
 		
-		print_r($deltaValues);
+		//print_r($deltaValues);
+		
 		$result = AC_AddLoggedValues($this->ReadPropertyInteger("ArchiveId"), $this->GetIDForIdent("Consumption"), $deltaValues);
 		
 		if ($result) {
