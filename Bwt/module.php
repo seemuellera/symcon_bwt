@@ -82,6 +82,7 @@ class Bwt extends IPSModule {
 
 		// Add the buttons for the test center
 		$form['actions'][] = Array("type" => "Button", "label" => "Refresh Overall Status", "onClick" => 'BWT_RefreshInformation($id);');
+		$form['actions'][] = Array("type" => "Button", "label" => "Reset Consumption Data", "onClick" => 'BWT_ResetConsumptionData($id);');
 		
 		// Return the completed form
 		return json_encode($form);
@@ -122,6 +123,11 @@ class Bwt extends IPSModule {
 				throw new Exception("Invalid Ident");
 			
 		}
+	}
+	
+	public function ResetConsumptionData() {
+		
+		AC_DeleteVariableData($this->ReadPropertyInteger("ArchiveId"), $this->GetIDForIdent("Consumption"), 0, 0);
 	}
 	
 	protected function listDirectory() {
