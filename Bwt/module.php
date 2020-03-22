@@ -273,13 +273,13 @@ class Bwt extends IPSModule {
 				$ts = mktime($tsHour, $tsMinute, $tsSecond, $tsMonth, $tsDay, $tsYear);
 				
 				$currentValue['TimeStamp'] = $ts;
-				$currentValue['Value'] = $matches[4];
+				$currentValue['Value'] = floatval($matches[4]);
 				
 				$deltaValues[] = $currentValue;
 			}
 		}
 		
-		// print_r($deltaValues);
+		print_r($deltaValues);
 		$result = AC_AddLoggedValues($this->ReadPropertyInteger("ArchiveId"), $this->GetIDForIdent("Consumption"), $deltaValues);
 		
 		if ($result) {
