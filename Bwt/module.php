@@ -282,7 +282,7 @@ class Bwt extends IPSModule {
 		// print_r($deltaValues);
 		$result = AC_AddLoggedValues($this->ReadPropertyInteger("ArchiveId"), $this->GetIDForIdent("Consumption"), $deltaValues);
 		
-		if (result) {
+		if ($result) {
 			
 			preg_match('/^(\d{6};\d\d:\d\d);.*$/', $fullReverseContent[0], $matches);
 			SetValue($this->GetIDForIdent("LatestUsageLogPosition"), $matches[1]);
@@ -295,7 +295,7 @@ class Bwt extends IPSModule {
 		
 		$result = AC_ReAggregateVariable($this->ReadPropertyInteger("ArchiveId"), $this->GetIDForIdent("Consumption") );
 		
-		if (! result) {
+		if (! $result) {
 			
 			IPS_LogMessage($_IPS['SELF'],"BWT - ERROR - Historic archive could not be re-aggregated");
 			return false;
