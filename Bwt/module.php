@@ -1,4 +1,4 @@
-Ar<?php
+<?php
 
 // Klassendefinition
 class Bwt extends IPSModule {
