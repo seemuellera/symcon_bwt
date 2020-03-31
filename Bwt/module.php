@@ -250,25 +250,24 @@ class Bwt extends IPSModule {
 		
 		$fullFileName = $this->ReadPropertyString("path") . "/" . GetValue($this->GetIDForIdent("LatestUsageLog"));
 		
-		$fullFileContent = file($fullFileName);
-		
-		// rsort($fullFileContent, SORT_STRING);
-		$fullReverseContent = array_reverse($fullFileContent);
-		
-		// Set the starting point to the last entry if it is not set already:
-		if (! GetValue($this->GetIDForIdent("LatestUsageLogPosition") ) ) {
-			
-			preg_match('/^(\d{6};\d\d:\d\d);.*$/', $fullReverseContent[0], $matches);
-			SetValue($this->GetIDForIdent("LatestUsageLogPosition"), $matches[1]);
-			
-			return true;
-		}
-		
-		// print_r($fullReverseContent);
+		$fp = open($fullFileName, "r");
+		$pos = -1;
 		
 		$deltaValues = Array();
 		
-		foreach ($fullReverseContent as $currentLine) {
+		while (-1 !== fseek($fp, $pos, SEEK_END) ) {
+			
+			$currentLine = fgets($fp);
+			
+			// Set the starting point to the last entry if it is not set already:
+			if (! GetValue($this->GetIDForIdent("LatestUsageLogPosition") ) ) {
+			
+				preg_match('/^(\d{6};\d\d:\d\d);.*$/', $fcurrentLine, $matches);
+				SetValue($this->GetIDForIdent("LatestUsageLogPosition"), $matches[1]);
+		
+				fclose($fp);
+				return true;
+			}
 			
 			if ( preg_match('/^(\d{6};\d\d:\d\d);(\d+),(\d+);(\d+).*$/', $currentLine, $matches) ) {
 				
@@ -278,6 +277,7 @@ class Bwt extends IPSModule {
 				
 					// we reached a line that we already processed so we can stop
 					// echo "Line already processed, exiting\n";
+					
 					break;
 					
 				}
@@ -296,7 +296,16 @@ class Bwt extends IPSModule {
 				
 				$deltaValues[] = $currentValue;
 			}
+			
+			$pos--;
 		}
+		
+		fseek($fp, -1, SEEK_END);
+		$lastLine = fgets($fp);
+		
+		fclose ($fp);
+		
+		// print_r($fullReverseContent);
 		
 		//print_r($deltaValues);
 		
@@ -304,7 +313,7 @@ class Bwt extends IPSModule {
 		
 		if ($result) {
 			
-			preg_match('/^(\d{6};\d\d:\d\d);.*$/', $fullReverseContent[0], $matches);
+			preg_match('/^(\d{6};\d\d:\d\d);.*$/', $lastLine, $matches);
 			SetValue($this->GetIDForIdent("LatestUsageLogPosition"), $matches[1]);
 		}
 		else {		
