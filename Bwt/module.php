@@ -252,12 +252,13 @@ class Bwt extends IPSModule {
 		
 		$fp = fopen($fullFileName, "r");
 		$pos = -1;
+		ini_set("auto_detect_line_endings", true);
 		
 		$deltaValues = Array();
 		
 		while (-1 !== fseek($fp, $pos, SEEK_END) ) {
 			
-			$currentLine = fgets($fp);
+			$currentLine = fgets($fp,4096);
 			
 			print_r($currentLine);
 			
