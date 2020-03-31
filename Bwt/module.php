@@ -250,7 +250,7 @@ class Bwt extends IPSModule {
 		
 		$fullFileName = $this->ReadPropertyString("path") . "/" . GetValue($this->GetIDForIdent("LatestUsageLog"));
 		
-		$fp = open($fullFileName, "r");
+		$fp = fopen($fullFileName, "r");
 		$pos = -1;
 		
 		$deltaValues = Array();
