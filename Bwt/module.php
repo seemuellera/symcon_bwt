@@ -259,6 +259,8 @@ class Bwt extends IPSModule {
 			
 			$currentLine = fgets($fp);
 			
+			print_r($currentLine);
+			
 			// Set the starting point to the last entry if it is not set already:
 			if (! GetValue($this->GetIDForIdent("LatestUsageLogPosition") ) ) {
 			
