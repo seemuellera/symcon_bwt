@@ -332,7 +332,7 @@ class Bwt extends IPSModule {
 					$deltaValues[] = $currentValue;
 					$lastLinePosition = $matches[1];
 					
-					if (count($deltaValues >= $maxRecords) ) {
+					if (count($deltaValues) >= $maxRecords ) {
 						
 						IPS_LogMessage($_IPS['SELF'],"BWT - reached maximum records to process: $maxRecords ");
 						break;
