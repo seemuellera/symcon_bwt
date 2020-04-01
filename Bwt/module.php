@@ -254,10 +254,22 @@ class Bwt extends IPSModule {
 		$pos = -1;
 		$currentLine = '';
 		$lastLinePosition = '';
+		// Fuse for testing, set to 0 for normal operations
+		$maxChars = 400;
 		
 		$deltaValues = Array();
 		
 		while (-1 !== fseek($fp, $pos, SEEK_END) ) {
+			
+			// Testing fuse
+			if ($maxChars != 0) {
+				
+				if (abs($pos) >= $maxChars) {
+					
+					IPS_LogMessage("BWT - DEBUG", "Max characters $maxChars reached. Stopping");
+					break;
+				}
+			}
 			
 			$char = fgetc($fp);
 			
