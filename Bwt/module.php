@@ -280,10 +280,14 @@ class Bwt extends IPSModule {
 				
 				// Set the starting point to the last entry if it is not set already:
 				if (! GetValue($this->GetIDForIdent("LatestUsageLogPosition") ) ) {
-			
+					
 					preg_match('/^(\d{6};\d\d:\d\d);.*$/', $currentLine, $matches);
 					
+					print_r($matches);
+					
 					if (array_key_exists(1, $matches) ) {
+						
+						IPS_LogMessage("BWT","The latest usage log was not processed until now. Setting log process to latest position " . $matches[1]);
 						
 						SetValue($this->GetIDForIdent("LatestUsageLogPosition"), $matches[1]);
 		
@@ -292,6 +296,7 @@ class Bwt extends IPSModule {
 					}
 					else {
 						// Not a full line yet
+						$pos--;
 						continue;
 					}
 				}
@@ -335,13 +340,6 @@ class Bwt extends IPSModule {
 			}	
 			
 			$pos--;
-			
-			IPS_LogMessage("BWT - DEBUG", $pos);
-			
-			if ($pos == -10) {
-				
-				break;
-			}
 		}
 		
 		fclose ($fp);
