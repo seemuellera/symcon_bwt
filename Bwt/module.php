@@ -256,6 +256,7 @@ class Bwt extends IPSModule {
 		$pos = -1;
 		$currentLine = '';
 		$lastLinePosition = '';
+		$maxRecords = 60; // This is the number of records to add to the archive before terminating until the next run. This is necessary to conserve memory of the $deltaRecords array
 		// Fuse for testing, set to 0 for normal operations
 		$maxChars = 0;
 		
@@ -330,6 +331,11 @@ class Bwt extends IPSModule {
 					
 					$deltaValues[] = $currentValue;
 					$lastLinePosition = $matches[1];
+					
+					if (count($deltaValues >= $maxRecords) ) {
+						
+						IPS_LogMessage($_IPS['SELF'],"BWT - reached maximum records to process: $maxRecords ");
+					}
 				}
 				
 				// And we reset the line for the next value
