@@ -350,7 +350,7 @@ class Bwt extends IPSModule {
 		
 		//print_r($deltaValues);
 		
-		IPS_LogMessage($_IPS['SELF'],"BWT - processed " . count($deltaValues . " delta records");
+		IPS_LogMessage($_IPS['SELF'],"BWT - processed " . count($deltaValues) . " delta records");
 		
 		$result = AC_AddLoggedValues($this->ReadPropertyInteger("ArchiveId"), $this->GetIDForIdent("Consumption"), $deltaValues);
 		
