@@ -132,6 +132,8 @@ class Bwt extends IPSModule {
 	public function ResetConsumptionData() {
 		
 		AC_DeleteVariableData($this->ReadPropertyInteger("ArchiveId"), $this->GetIDForIdent("Consumption"), 0, 0);
+		AC_SetLoggingStatus($this->ReadPropertyInteger("ArchiveId"), $this->GetIDForIdent("Consumption"), true);
+		AC_SetGraphStatus($this->ReadPropertyInteger("ArchiveId"), $this->GetIDForIdent("Consumption"), true);
 	}
 	
 	protected function listDirectory() {
@@ -255,7 +257,7 @@ class Bwt extends IPSModule {
 		$currentLine = '';
 		$lastLinePosition = '';
 		// Fuse for testing, set to 0 for normal operations
-		$maxChars = 400;
+		$maxChars = 0;
 		
 		$deltaValues = Array();
 		
@@ -276,7 +278,7 @@ class Bwt extends IPSModule {
 			if ($char == PHP_EOL) {
 				
 				// We reached a new line and need to process it
-				IPS_LogMessage("DEBUG", $currentLine);
+				// IPS_LogMessage("DEBUG", $currentLine);
 				
 				// Set the starting point to the last entry if it is not set already:
 				if (! GetValue($this->GetIDForIdent("LatestUsageLogPosition") ) ) {
@@ -347,6 +349,8 @@ class Bwt extends IPSModule {
 		// print_r($fullReverseContent);
 		
 		//print_r($deltaValues);
+		
+		IPS_LogMessage($_IPS['SELF'],"BWT - processed " . count($deltaValues . " delta records");
 		
 		$result = AC_AddLoggedValues($this->ReadPropertyInteger("ArchiveId"), $this->GetIDForIdent("Consumption"), $deltaValues);
 		
