@@ -335,6 +335,13 @@ class Bwt extends IPSModule {
 			}	
 			
 			$pos--;
+			
+			IPS_LogMessage("BWT - DEBUG", $pos);
+			
+			if ($pos == -10) {
+				
+				break;
+			}
 		}
 		
 		fclose ($fp);
