@@ -252,53 +252,67 @@ class Bwt extends IPSModule {
 		
 		$fp = fopen($fullFileName, "r");
 		$pos = -1;
-		ini_set("auto_detect_line_endings", true);
+		$currentLine = '';
+		$lastLinePosition = '';
 		
 		$deltaValues = Array();
 		
 		while (-1 !== fseek($fp, $pos, SEEK_END) ) {
 			
-			$currentLine = fgets($fp,4096);
+			$char = fgetc($fp);
 			
-			print_r($currentLine);
+			if ($char == PHP_EOL {
+				
+				// We reached a new line and need to process it
+				print_r($currentLine);
+				
+				// Set the starting point to the last entry if it is not set already:
+				if (! GetValue($this->GetIDForIdent("LatestUsageLogPosition") ) ) {
 			
-			// Set the starting point to the last entry if it is not set already:
-			if (! GetValue($this->GetIDForIdent("LatestUsageLogPosition") ) ) {
-			
-				preg_match('/^(\d{6};\d\d:\d\d);.*$/', $fcurrentLine, $matches);
-				SetValue($this->GetIDForIdent("LatestUsageLogPosition"), $matches[1]);
+					preg_match('/^(\d{6};\d\d:\d\d);.*$/', $fcurrentLine, $matches);
+					SetValue($this->GetIDForIdent("LatestUsageLogPosition"), $matches[1]);
 		
-				fclose($fp);
-				return true;
-			}
-			
-			if ( preg_match('/^(\d{6};\d\d:\d\d);(\d+),(\d+);(\d+).*$/', $currentLine, $matches) ) {
-				
-				// print $matches[1] . ": " . $matches[2] . " / " . $matches[3] . " / " . $matches[4] . "\n";
-				
-				if ($matches[1] == GetValue($this->GetIDForIdent("LatestUsageLogPosition") ) ) {
-				
-					// we reached a line that we already processed so we can stop
-					// echo "Line already processed, exiting\n";
-					
-					break;
-					
+					fclose($fp);
+					return true;
 				}
 				
-				$currentValue = Array();
-				$tsYear = "20" . substr($matches[1],4,2);
-				$tsMonth = substr($matches[1],2,2);
-				$tsDay = substr($matches[1],0,2);
-				$tsHour = substr($matches[1],7,2);
-				$tsMinute = substr($matches[1],10,2);
-				$tsSecond = 0;
-				$ts = mktime($tsHour, $tsMinute, $tsSecond, $tsMonth, $tsDay, $tsYear);
+				if ( preg_match('/^(\d{6};\d\d:\d\d);(\d+),(\d+);(\d+).*$/', $currentLine, $matches) ) {
 				
-				$currentValue['TimeStamp'] = $ts;
-				$currentValue['Value'] = floatval($matches[4]);
+					// print $matches[1] . ": " . $matches[2] . " / " . $matches[3] . " / " . $matches[4] . "\n";
+					
+					if ($matches[1] == GetValue($this->GetIDForIdent("LatestUsageLogPosition") ) ) {
+					
+						// we reached a line that we already processed so we can stop
+						// echo "Line already processed, exiting\n";
+						
+						break;
+						
+					}
+					
+					$currentValue = Array();
+					$tsYear = "20" . substr($matches[1],4,2);
+					$tsMonth = substr($matches[1],2,2);
+					$tsDay = substr($matches[1],0,2);
+					$tsHour = substr($matches[1],7,2);
+					$tsMinute = substr($matches[1],10,2);
+					$tsSecond = 0;
+					$ts = mktime($tsHour, $tsMinute, $tsSecond, $tsMonth, $tsDay, $tsYear);
+					
+					$currentValue['TimeStamp'] = $ts;
+					$currentValue['Value'] = floatval($matches[4]);
+					
+					$deltaValues[] = $currentValue;
+					$lastLinePosition = $matches[1];
+				}
 				
-				$deltaValues[] = $currentValue;
+				// And we reset the line for the next value
+				$currentLine = '';
 			}
+			else {
+				
+				// Add char to current line
+				$currentLine = $char . $currentLine;
+			}	
 			
 			$pos--;
 		}
@@ -316,8 +330,7 @@ class Bwt extends IPSModule {
 		
 		if ($result) {
 			
-			preg_match('/^(\d{6};\d\d:\d\d);.*$/', $lastLine, $matches);
-			SetValue($this->GetIDForIdent("LatestUsageLogPosition"), $matches[1]);
+			SetValue($this->GetIDForIdent("LatestUsageLogPosition"), $lastLinePosition);
 		}
 		else {		
 			
