@@ -264,7 +264,7 @@ class Bwt extends IPSModule {
 			if ($char == PHP_EOL) {
 				
 				// We reached a new line and need to process it
-				print_r($currentLine);
+				IPS_LogMessage("DEBUG", $currentLine);
 				
 				// Set the starting point to the last entry if it is not set already:
 				if (! GetValue($this->GetIDForIdent("LatestUsageLogPosition") ) ) {
