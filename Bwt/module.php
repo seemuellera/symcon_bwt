@@ -270,10 +270,18 @@ class Bwt extends IPSModule {
 				if (! GetValue($this->GetIDForIdent("LatestUsageLogPosition") ) ) {
 			
 					preg_match('/^(\d{6};\d\d:\d\d);.*$/', $currentLine, $matches);
-					SetValue($this->GetIDForIdent("LatestUsageLogPosition"), $matches[1]);
+					
+					if (array_key_exists(1, $matches) ) {
+						
+						SetValue($this->GetIDForIdent("LatestUsageLogPosition"), $matches[1]);
 		
-					fclose($fp);
-					return true;
+						fclose($fp);
+						return true;
+					}
+					else {
+						// Not a full line yet
+						continue;
+					}
 				}
 				
 				if ( preg_match('/^(\d{6};\d\d:\d\d);(\d+),(\d+);(\d+).*$/', $currentLine, $matches) ) {
@@ -316,9 +324,6 @@ class Bwt extends IPSModule {
 			
 			$pos--;
 		}
-		
-		fseek($fp, -1, SEEK_END);
-		$lastLine = fgets($fp);
 		
 		fclose ($fp);
 		
