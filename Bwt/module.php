@@ -261,7 +261,7 @@ class Bwt extends IPSModule {
 			
 			$char = fgetc($fp);
 			
-			if ($char == PHP_EOL {
+			if ($char == PHP_EOL) {
 				
 				// We reached a new line and need to process it
 				print_r($currentLine);
