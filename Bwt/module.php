@@ -269,7 +269,7 @@ class Bwt extends IPSModule {
 				// Set the starting point to the last entry if it is not set already:
 				if (! GetValue($this->GetIDForIdent("LatestUsageLogPosition") ) ) {
 			
-					preg_match('/^(\d{6};\d\d:\d\d);.*$/', $fcurrentLine, $matches);
+					preg_match('/^(\d{6};\d\d:\d\d);.*$/', $currentLine, $matches);
 					SetValue($this->GetIDForIdent("LatestUsageLogPosition"), $matches[1]);
 		
 					fclose($fp);
