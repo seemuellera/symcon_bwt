@@ -132,6 +132,7 @@ class Bwt extends IPSModule {
 	public function ResetConsumptionData() {
 		
 		AC_DeleteVariableData($this->ReadPropertyInteger("ArchiveId"), $this->GetIDForIdent("Consumption"), 0, 0);
+		sleep(5);
 		AC_SetLoggingStatus($this->ReadPropertyInteger("ArchiveId"), $this->GetIDForIdent("Consumption"), true);
 		AC_SetGraphStatus($this->ReadPropertyInteger("ArchiveId"), $this->GetIDForIdent("Consumption"), true);
 	}
@@ -334,7 +335,8 @@ class Bwt extends IPSModule {
 					
 					if (count($deltaValues) >= $maxRecords ) {
 						
-						IPS_LogMessage($_IPS['SELF'],"BWT - reached maximum records to process: $maxRecords ");
+						IPS_LogMessage($_IPS['SELF'],"BWT - reached maximum records to process: $maxRecords and stopping on $lastLinePosition ");
+						print_r($deltaValues);
 						break;
 					}
 				}
