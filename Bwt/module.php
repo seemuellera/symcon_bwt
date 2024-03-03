@@ -230,6 +230,39 @@ class Bwt extends IPSModule {
 		
 		return $errorCount;
 	}
+
+	protected function countErrorEntriesWithArchiveUpdate($errorType, $varId) {
+		
+		$fullFileName = $this->ReadPropertyString("path") . "/" . GetValue($this->GetIDForIdent("LatestErrorLog"));
+		
+		$fullFileContent = file($fullFileName);
+		
+		// print_r($fullFileContent);
+		
+		$errorCount = 0;
+		$archiveData = Array();
+		
+		foreach ($fullFileContent as $currentLine) {
+			
+			if (preg_match('/^(\d\d)(\d\d)(\d\d);(\d\d):(\d\d);' . $errorType . '.*$/', $currentLine, $matches, PREG_OFFSET_CAPTURE) ) {
+				
+				$errorCount++;
+				
+				$day = $matches[1][0];
+				$month = $matches[2][0];
+				$year = $matches[3][0];
+				$hour = $matches[4][0];
+				$minute = $matches[5][0];
+
+				$timestamp = mktime($hour, $minute, 0, $month, $day, ($year + 2000));
+				$archiveData[] = Array('Timestamp' => $timestamp, 'Value' => $errorCount);
+			}
+		}
+		
+		print_r($archiveData);
+		AC_AddLoggedValues($this->ReadPropertyInteger("ArchiveId"), $varId, $archiveData);
+		return $errorCount;
+	}
 	
 	protected function processErrorLog() {
 		
@@ -242,7 +275,7 @@ class Bwt extends IPSModule {
 		
 		// Aqua Stop
 		SetValue($this->GetIDForIdent("AquaWatchTriggers"), intval($this->countErrorEntries("15")));
-		SetValue($this->GetIDForIdent("AquaStopTriggers"), intval($this->countErrorEntries("14")));
+		SetValue($this->GetIDForIdent("AquaStopTriggers"), intval($this->countErrorEntriesWithArchiveUpdate("14", $this->GetIDForIdent("AquaStopTriggers"))));
 		SetValue($this->GetIDForIdent("AquaStopLitersTriggers"), intval($this->countErrorEntries("13")));
 	}
 	
