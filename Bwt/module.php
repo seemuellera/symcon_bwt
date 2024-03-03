@@ -118,9 +118,6 @@ class Bwt extends IPSModule {
 		
 			
 			case "Status":
-				// Default Action for Status Variable
-				
-				// Neuen Wert in die Statusvariable schreiben
 				SetValue($this->GetIDForIdent($Ident), $Value);
 				break;
 			default:
