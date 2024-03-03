@@ -261,6 +261,7 @@ class Bwt extends IPSModule {
 		
 		// print_r($archiveData);
 		AC_AddLoggedValues($this->ReadPropertyInteger("ArchiveId"), $varId, $archiveData);
+		AC_ReAggregateVariable($this->ReadPropertyInteger("ArchiveId"), $varId);
 		return $errorCount;
 	}
 	
