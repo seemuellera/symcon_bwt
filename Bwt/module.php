@@ -255,11 +255,11 @@ class Bwt extends IPSModule {
 				$minute = $matches[5][0];
 
 				$timestamp = mktime($hour, $minute, 0, $month, $day, ($year + 2000));
-				$archiveData[] = Array('Timestamp' => $timestamp, 'Value' => $errorCount);
+				$archiveData[] = Array('TimeStamp' => $timestamp, 'Value' => $errorCount);
 			}
 		}
 		
-		print_r($archiveData);
+		// print_r($archiveData);
 		AC_AddLoggedValues($this->ReadPropertyInteger("ArchiveId"), $varId, $archiveData);
 		return $errorCount;
 	}
