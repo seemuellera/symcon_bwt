@@ -268,16 +268,16 @@ class Bwt extends IPSModule {
 	protected function processErrorLog() {
 		
 		// Regenerations 
-		SetValue($this->GetIDForIdent("RegenerationsColumnA"), intval($this->countErrorEntries("71")));
-		SetValue($this->GetIDForIdent("RegenerationsColumnB"), intval($this->countErrorEntries("72")));
+		SetValue($this->GetIDForIdent("RegenerationsColumnA"), intval($this->countErrorEntriesWithArchiveUpdate("71", $this->GetIDForIdent("RegenerationsColumnA"))));
+		SetValue($this->GetIDForIdent("RegenerationsColumnB"), intval($this->countErrorEntriesWithArchiveUpdate("72", $this->GetIDForIdent("RegenerationsColumnB"))));
 		
 		// Out of Salt
-		SetValue($this->GetIDForIdent("OutOfSaltAlerts"), intval($this->countErrorEntries("5")));
+		SetValue($this->GetIDForIdent("OutOfSaltAlerts"), intval($this->countErrorEntriesWithArchiveUpdate("5", $this->GetIDForIdent("OutOfSaltAlerts"))));
 		
 		// Aqua Stop
-		SetValue($this->GetIDForIdent("AquaWatchTriggers"), intval($this->countErrorEntries("15")));
+		SetValue($this->GetIDForIdent("AquaWatchTriggers"), intval($this->countErrorEntriesWithArchiveUpdate("15", $this->GetIDForIdent("AquaWatchTriggers"))));
 		SetValue($this->GetIDForIdent("AquaStopTriggers"), intval($this->countErrorEntriesWithArchiveUpdate("14", $this->GetIDForIdent("AquaStopTriggers"))));
-		SetValue($this->GetIDForIdent("AquaStopLitersTriggers"), intval($this->countErrorEntries("13")));
+		SetValue($this->GetIDForIdent("AquaStopLitersTriggers"), intval($this->countErrorEntries("13", $this->GetIDForIdent("AquaStopLitersTriggers"))));
 	}
 	
 	protected function processLatestUsageEntries() {
